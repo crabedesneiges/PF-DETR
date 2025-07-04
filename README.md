@@ -1,6 +1,8 @@
 # pflow-DETR: Particle Flow with DETR
 
 A deep learning framework for particle flow reconstruction in high-energy physics, leveraging the power of the DETR (DEtection TRansformer) architecture.
+The code use as a base the repo : https://github.com/nilotpal09/hg-tspn-pflow and https://github.com/saitoicepp/hg-tspn-pflow-simple wich is a fork of the first repo.
+We use the second repo implementation of HGPflow to compare our performance with the file : original_refiner.npz
 
 -----
 

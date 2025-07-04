@@ -1,0 +1,62 @@
+# Configuration for DataModule, Model, and Training in DETR pipeline
+# Configuration for DataModule, Model, and Training in DETR pipeline
+
+dataset:
+  path_to_train_valid: '/data/saito/workspace/2212.01328/data/20250131/train/*.root'
+  num_events_train_valid: 800000
+  frac_train: 0.9
+  path_to_test: '/data/saito/workspace/2212.01328/data/20250131/test/*.root'
+  num_events_test: 30000
+  enable_dataloader_cache: false
+  build_topocluster: true
+  max_particles: 30
+  path_to_normalization_params: "data/normalization/params.json"
+  num_dataloader_workers: 16
+  batchsize: 64
+  is_private_sample: true
+
+model:
+  indence_matrix_prediction: true
+  track_and_charged_cardinality: true
+  use_DETR_V3: true
+  use_auxiliary_loss: false
+  use_multimodal_fusion: true
+  use_cross_modal_attention: true
+  no_object_weight: 0.2
+  num_classes: 5
+  hidden_dim: 256
+  num_queries_notrack: 15
+  cluster_input_dim: 8
+  topo_input_dim: 8
+  track_input_dim: 18
+  nheads: 8
+  num_encoder_layers: 6
+  num_decoder_layers: 6
+  charged_class_weights: [0.2, 1.0,1.0]
+  neutral_class_weights: [1.0, 0.6, 1.0]
+  transformer_dropout: 0.1
+  mlp_dropout: 0.0
+
+training:
+  indence_matrix_loss_coeff: 0.1
+  cls_loss_coeff: 1.0
+  bbox_loss_coeff: 0.5
+  num_epochs: 300
+  learningrate: 5.0e-6
+  weight_decay: 0.0001
+
+  # Cosine Annealing LR Scheduler
+  lr_scheduler:
+    name: CosineAnnealingLR
+    warmup_steps: 15
+    warmup_start_lr: 5.0e-7
+    base_lr: 5.0e-6
+    T_max: 300
+    eta_min: 5.0e-7
+
+  n_epoch_warmup: 150
+  n_epoch_bbox_ramp: 0
+  warmup_focus_classes: false
+  loss_phase_mode: false
+  n_epoch_phase1: 6
+  n_epoch_phase2: 5

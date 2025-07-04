@@ -1,0 +1,13 @@
+.saved
+lightning_logs
+cache
+workspace
+checkpoints
+*.out
+*.log
+mlruns
+logs
+*.npz
+web_plot/npz_files/hgp/original_refiner.npz
+workspace/npz/hgp/original_refiner.npz
+workspace/npz/hgp/test_test.npz

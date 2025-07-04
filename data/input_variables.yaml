@@ -1,0 +1,211 @@
+
+"rootfile":
+    "normal":
+        # track variables
+        - "track_parent_idx"
+        - "track_d0"
+        - "track_z0"
+        - "track_phi"
+        - "track_theta"
+        - "track_phi"
+        - "track_x_layer_0"
+        - "track_x_layer_1"
+        - "track_x_layer_2"
+        - "track_x_layer_3"
+        - "track_x_layer_4"
+        - "track_x_layer_5"
+        - "track_y_layer_0"
+        - "track_y_layer_1"
+        - "track_y_layer_2"
+        - "track_y_layer_3"
+        - "track_y_layer_4"
+        - "track_y_layer_5"
+        - "track_z_layer_0"
+        - "track_z_layer_1"
+        - "track_z_layer_2"
+        - "track_z_layer_3"
+        - "track_z_layer_4"
+        - "track_z_layer_5"
+        - "track_qoverp"
+        - "track_not_reg:original"
+        - "track_reconstructed:private"
+        - "track_in_acceptance:private"
+        # cell variables
+        - "cell_x"
+        - "cell_y"
+        - "cell_z"
+        - "cell_e"
+        - "cell_eta"
+        - "cell_phi"
+        - "cell_layer"
+        # - "cell_particle_target"
+        # - "cell_parent_idx"
+        - "cell_topo_idx"
+        # particle variables
+        - "particle_pdgid"
+        - "particle_px:original"
+        - "particle_py:original"
+        - "particle_pz:original"
+        - "particle_pt:private"
+        - "particle_eta:private"
+        - "particle_phi:private"
+        - "particle_e"
+        - "particle_prod_x"
+        - "particle_prod_y"
+        - "particle_prod_z"
+        - "particle_dep_energy"
+        - "particle_to_track:original"
+        - "particle_track_idx:private"
+        # topojet variables
+        - "topo_jet_pt"
+        - "topo_jet_eta"
+        - "topo_jet_phi"
+        - "topo_jet_m"
+    "meta":
+        # meta variables
+        - "particle_to_node_weight"
+        - "particle_to_node_idx"
+        # - "particle_isIso"
+        - "cell_to_cell_edge_start"
+        - "cell_to_cell_edge_end"
+        - "track_to_cell_edge_start"
+        - "track_to_cell_edge_end"
+        # - "topo_jet_constituents_list"
+
+"graph":
+    "cells":
+        # Embedding
+        "node_features":
+            - "cell_deltax:normed"
+            - "cell_deltay:normed"
+            - "cell_deltaz:normed"
+            - "cell_loget:normed"
+            - "cell_deltaeta:normed"
+            - "cell_deltaphi:normed"
+            - "cell_layer:normed"
+            # - "cell_particle_target"
+            # - "cell_parent_idx"
+            - "cell_topo_idx:normed"
+    "tracks":
+        # Embedding
+        "node_features":
+            - "track_logd0:normed"
+            - "track_logz0:normed"
+            - "track_logpt:normed"
+            - "track_deltaeta:normed"
+            - "track_deltaphi:normed"
+            - "track_deltaeta_layer_0:normed"
+            - "track_deltaeta_layer_1:normed"
+            - "track_deltaeta_layer_2:normed"
+            - "track_deltaeta_layer_3:normed"
+            - "track_deltaeta_layer_4:normed"
+            - "track_deltaeta_layer_5:normed"
+            - "track_deltaphi_layer_0:normed"
+            - "track_deltaphi_layer_1:normed"
+            - "track_deltaphi_layer_2:normed"
+            - "track_deltaphi_layer_3:normed"
+            - "track_deltaphi_layer_4:normed"
+            - "track_deltaphi_layer_5:normed"
+            - "track_isMuon"
+    "topoclusters":
+        # Embedding
+        "node_features":
+            - "topocluster_deltax:normed"
+            - "topocluster_deltay:normed"
+            - "topocluster_deltaz:normed"
+            - "topocluster_loge:normed"
+            - "topocluster_deltaeta:normed"
+            - "topocluster_deltaphi:normed"
+            - "topocluster_emfrac:normed"
+            - "topocluster_hadfrac:normed"
+    "nodes":
+        # Refiner
+        "skip_variables":
+            - "deltaeta"
+            - "deltaphi"
+            # - "layer"
+            - "isTrack"
+            - "logpt"
+            - "emfrac"
+            - "hadfrac"
+        # EdgesNet
+        "edge_nets":
+            - "logpt"
+            - "deltaeta"
+            - "deltaphi"
+            # - "isMuon"
+        "misc":
+            - "isTrack"
+            - "eta"
+            - "phi"
+    "node_to_pflow":
+        # Refiner
+        - "is_track"
+        - "is_inc_assignment"
+        - "diagonal"
+        # Loss
+        - "weight_node_loget"
+        - "weight_node_et"
+    "pflows":
+        # Refiner
+        - "is_charged"
+        # Loss
+        - "weight_particle_loget"
+        - "weight_particle_et"
+    "truths":
+        "p4":
+            - "particle_logpt:normed"
+            - "particle_eta:normed"
+            - "particle_phi:normed"
+            #- "particle_deltaeta:normed"
+            #- "particle_deltaphi:normed"
+
+"normalization_groups":
+    "logpt":
+      - "track_logpt"
+      - "particle_logpt"
+    "eta":
+      - "particle_eta"
+      - "cell_deltaeta"
+      - "track_deltaeta"
+      - "topocluster_deltaeta"
+    "phi":
+      - "particle_phi"
+      - "cell_deltaphi"
+      - "track_deltaphi"
+      - "topocluster_deltaphi"
+
+"plot":
+    "tracks":
+        # Track
+        - "track_pt"
+        - "track_eta"
+        - "track_phi"
+        - "track_eta_layer_0"
+        - "track_eta_layer_1"
+        - "track_eta_layer_2"
+        - "track_eta_layer_3"
+        - "track_eta_layer_4"
+        - "track_eta_layer_5"
+        - "track_phi_layer_0"
+        - "track_phi_layer_1"
+        - "track_phi_layer_2"
+        - "track_phi_layer_3"
+        - "track_phi_layer_4"
+        - "track_phi_layer_5"
+    "cells":
+        # cell
+        - "cell_et"
+        - "cell_eta"
+        - "cell_phi"
+        - "cell_topo_idx"
+        - "cell_layer"
+        - "cell_zeta"
+    "topoclusters":
+        # topocluster
+        - "topocluster_loget"
+        - "topocluster_eta"
+        - "topocluster_phi"
+    "particles":
+        # particle
+        - "particle_class"

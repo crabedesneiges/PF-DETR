@@ -1,5 +1,3 @@
-Of course, here is the refactored README file.
-
 # pflow-DETR: Particle Flow with DETR
 
 \<div align="center"\>
@@ -16,7 +14,7 @@ A deep learning framework for particle flow reconstruction in high-energy physic
 
 ### Key Features
 
-  * **Two DETR Versions**: Implements two iterations of the DETR architecture with ongoing improvements.
+  * **PF-DETR Implementation**: Implements a transformer architecture inspired by DETR architecture with ongoing improvements.
   * **Experiment Tracking**: Integrates seamlessly with Tensorboard for tracking and managing experiments.
   * **Visualization Tools**: Offers utilities for visualizing results, statistics, and event displays.
 
@@ -35,8 +33,8 @@ A deep learning framework for particle flow reconstruction in high-energy physic
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/username/pflow_DETR_V3.git
-    cd pflow_DETR_V3
+    git clone https://github.com/crabedesneiges/PF-DETR.git
+    cd PF-DETR
     ```
 
 2.  **Install dependencies:**
@@ -63,12 +61,10 @@ A deep learning framework for particle flow reconstruction in high-energy physic
 ├── data/               # Data loading and preparation scripts
 ├── model/              # DETR model architecture definitions
 ├── scripts/            # Utility, analysis, and visualization scripts
-├── training/           # Training, evaluation, and comparison tools
-├── mlruns/             # (Auto-generated) MLflow experiment data
+├── training/           # Training, evaluation tools
+├── web_plot/           # Streamlit web application for visualization
 ├── lightning_logs/     # (Auto-generated) PyTorch Lightning logs
 ├── checkpoints/        # (Auto-generated) Model checkpoints
-├── train.py            # Main script for training models
-├── mlflow_experiment.py # Script for running multiple experiments
 └── README.md           # This file
 ```
 
@@ -76,47 +72,100 @@ A deep learning framework for particle flow reconstruction in high-energy physic
 
 ## ⚙️ Usage
 
-### Training a Model
+### 1\. Generate Normalization Parameters
 
-  * **Single Run**: Train a model using a specific configuration file on a designated GPU.
+This only needs to be run once before the first training.
+
+```bash
+python scripts/make_normalization_params.py --inputfilename '/data/multiai/data3/HyperGraph-2212.01328/singleQuarkJet_train.root'
+```
+
+### 2\. Training a Model
+
+  * **Start a new training run**: Train a model using a specific configuration file on a designated GPU.
 
     ```bash
-    python training/train.py --gpu-device 0 --config config/test.yaml
+    python -m training.train --gpu-device 0 --config config/test.yaml
+    ```
+
+  * **Resume from a checkpoint**:
+
+    ```bash
+    python -m training.train --gpu-device 0 --config config/test.yaml --resume checkpoints/chek_file.ckpt
     ```
 
       * `--gpu-device`: The ID of the GPU to use.
       * `--config`: Path to the YAML configuration file.
-      * `--resume`: Resule from checkpoints.
+      * `--resume`: Path to the model checkpoint file to resume training.
 
-### Experiment Tracking and Visualization
+### 3\. Model Evaluation
 
-  * **TensorBoard**: Launch TensorBoard to monitor training progress in real-time.
+Evaluate a trained model's performance and save the output to a `.npz` file in the `workspace/npz/` directory.
+
+```bash
+python training/eval_model.py \
+    --config_path config/test.yaml \
+    --checkpoint_path checkpoints/test/detr-epochepoch=24-val_loss=1.9253.ckpt \
+    --cuda_visible_device "1"
+```
+
+*Additional options:*
+
+  * `--seed`: Set a random seed for reproducibility.
+  * `--eval_train`: Evaluate on the training dataset instead of the test set.
+  * `--batchsize`: Override the batch size specified in the config file.
+
+### 4\. Experiment Tracking
+
+Launch TensorBoard to monitor training progress in real-time.
+
+```bash
+tensorboard --logdir lightning_logs --port 6006
+```
+
+Access the dashboard at `http://localhost:6006`.
+
+-----
+
+## 🔬 Advanced Analysis & Visualization
+
+### Model and Performance Comparison
+
+Compare pflow-DETR with other models (like HGP) or different pflow-DETR runs.
+
+  * **Particle-Level Comparison**:
 
     ```bash
-    tensorboard --logdir lightning_logs --port 6006
+    python scripts/compare_particle_level.py \
+        --model1_file workspace/npz/test_test.npz \
+        --model1_type detr \
+        --model1_name "test" \
+        --model2_file workspace/npz/original_refiner.npz \
+        --model2_type hgp \
+        --model2_name "hgp" \
+        --outputdir workspace/particle/test/ \
+        --detr_conf_threshold 0.75
     ```
 
-    Access the dashboard at `http://localhost:6006`.
-
-### Evaluation and Analysis
-
-  * **Model Evaluation**: Evaluate a trained model's performance on the test or training dataset.
+  * **Jet-Level Comparison**:
 
     ```bash
-    python training/eval_model.py \
-        --config_path config/my_benchmark/base.yaml \
-        --checkpoint_path checkpoints/base/model.ckpt \
-        --cuda_visible_device "1"
+    python scripts/compare_jet_clustering.py \
+        --model1_inputfile workspace/npz/test_test.npz --model1_name "detr_test" \
+        --model2_inputfile workspace/npz/original_refiner.npz --model2_name "hgp" \
+        --outputdir workspace/jet_level/test/ \
+        --detr_conf_threshold 0.75
     ```
 
-  * **Result Visualization**: Generate plots and visualizations from an evaluation output file.
+### Interactive Visualization Web App
 
-    ```bash
-    python training/visualize.py \
-        --inputfile workspace/eval/my_experiment.npz \
-        --outputdir workspace/my_experiment/plots \
-        --conf-threshold 0.75
-    ```
+Use the Streamlit web app to view plots at the Particle and Jet Level and compare multiple runs.
+
+```bash
+streamlit run web_plot/app.py
+```
+
+### Static Visualization
 
   * **Event Display**: Create visual representations of individual collision events.
 
@@ -128,34 +177,16 @@ A deep learning framework for particle flow reconstruction in high-energy physic
         --conf-threshold 0.75
     ```
 
+  * **Result Visualization**: Generate plots from an evaluation output file.
+
+    ```bash
+    python training/visualize.py \
+        --inputfile workspace/eval/my_experiment.npz \
+        --outputdir workspace/my_experiment/plots \
+        --conf-threshold 0.75
+    ```
+
 -----
-
-## 🔬 Advanced Analysis
-
-### Model and Performance Comparison
-
-This framework includes scripts to compare pflow-DETR with other models (like HGP) or to compare different versions of pflow-DETR against each other.
-
-  * **Particle-Level Comparison**:
-
-    ```bash
-    python training/compare_particle_level.py \
-        --model1_file workspace/eval/detr_model_A.npz --model1_name "DETR_A" \
-        --model2_file workspace/eval/detr_model_B.npz --model2_name "DETR_B" \
-        --outputdir workspace/comparison/particle_level/ \
-        --detr_conf_threshold 0.75
-    ```
-
-  * **Jet-Level Comparison**:
-
-    ```bash
-    python scripts/compare_jet_clustering.py \
-        --model1_inputfile workspace/eval/detr_model_A.npz --model1_name "DETR_A" \
-        --model2_inputfile workspace/original_hgp_results.npz --model2_name "HGP" \
-        --outputdir workspace/comparison/jet_level/ \
-        --detr_conf_threshold 0.75
-    ```
-
 
 ## 📚 References
 

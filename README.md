@@ -1,9 +1,5 @@
 # pflow-DETR: Particle Flow with DETR
 
-\<div align="center"\>
-
-\</div\>
-
 A deep learning framework for particle flow reconstruction in high-energy physics, leveraging the power of the DETR (DEtection TRansformer) architecture.
 
 -----

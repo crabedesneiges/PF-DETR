@@ -1,9 +1,16 @@
-# pflow-DETR: Particle Flow with DETR
+# pflow-DETR: Particle Flow with DETR 🚀
 
-A deep learning framework for particle flow reconstruction in high-energy physics, leveraging the power of the DETR (DEtection TRansformer) architecture.
-The code use as a base the repo : https://github.com/nilotpal09/hg-tspn-pflow and https://github.com/saitoicepp/hg-tspn-pflow-simple wich is a fork of the first repo.
-We use the second repo implementation of HGPflow to compare our performance with the file : original_refiner.npz
+A deep learning framework for **particle flow** reconstruction in high-energy physics, leveraging the power of the **DETR** (DEtection TRansformer) architecture.
 
+This project introduces a novel approach to particle reconstruction by replacing the graph-based methods of previous models with a transformer-based, end-to-end object detection system.
+
+## Background & Comparison
+
+This work is built upon the foundational codebases of:
+* [hg-tspn-pflow](https://github.com/nilotpal09/hg-tspn-pflow)
+* [hg-tspn-pflow-simple](https://github.com/saitoicepp/hg-tspn-pflow-simple)
+
+To benchmark the performance of our **pflow-DETR** model, we conduct direct comparisons against the original Hierarchical Graph Pooling (**HGP**) implementation. These comparisons utilize the pre-computed HGP results found in the `original_refiner.npz` file from the `saitoicepp/hg-tspn-pflow-simple` repository.
 -----
 
 ## 🚀 Introduction

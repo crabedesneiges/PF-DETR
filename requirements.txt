@@ -155,7 +155,7 @@ torchmetrics==1.7.1
 tornado==6.4.2
 tqdm==4.67.1
 traitlets==5.14.3
-triton==3.3.0
+triton
 typing-inspection==0.4.0
 typing_extensions==4.13.1
 tzdata==2025.2

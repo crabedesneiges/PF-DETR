@@ -25,7 +25,9 @@ databricks-sdk==0.52.0
 debugpy==1.8.13
 decorator==5.2.1
 Deprecated==1.2.18
+--find-links https://data.dgl.ai/wheels/torch-2.4/cu124/repo.html
 dgl==2.4.0+cu124
+dill==0.4.0
 dill==0.4.0
 docker==7.1.0
 exceptiongroup==1.2.2

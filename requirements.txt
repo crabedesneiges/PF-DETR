@@ -75,7 +75,6 @@ mpmath==1.3.0
 msgpack==1.1.0
 multidict==6.3.2
 multiprocess==0.70.18
-MultiScaleDeformableAttention==1.0
 narwhals==1.38.2
 nest-asyncio==1.6.0
 networkx==3.4.2
